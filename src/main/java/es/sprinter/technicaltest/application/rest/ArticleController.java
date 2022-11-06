@@ -63,7 +63,7 @@ public class ArticleController {
 		return new ResponseEntity<>(this.articleDTOMapper.toArticleDTO(this.articleService.updateArticle(articleCode, this.articleDTOMapper.fromArticleDTO(articleDataDTO))), HttpStatus.OK);
 	}
 	
-	@PatchMapping(value = "/{articleCode}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PatchMapping(value = "/{articleCode}/price", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<ArticleDTO> updatePriceArticle(@PathVariable final String articleCode, @RequestBody @Valid final ArticlePriceModificationRequestDTO articleDataDTO) {
 		logger.info("Llamada a la API de articulos para modificar el precio del articulo con codigo: {}", articleCode);
 		return new ResponseEntity<>(this.articleDTOMapper.toArticleDTO(this.articleService.updatePriceArticleByCode(articleCode, articleDataDTO.getPrice())), HttpStatus.OK);
