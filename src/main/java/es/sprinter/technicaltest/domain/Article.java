@@ -1,6 +1,7 @@
 package es.sprinter.technicaltest.domain;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
@@ -22,21 +23,23 @@ public class Article {
 		this.id = id;
 		this.code = code;
 		this.description = description;
-		this.price = price;
+		this.price = price.setScale(2, RoundingMode.HALF_UP);
 		this.lastModificationDate = lastModificationDate;
 	}
 
 	public void changePrice(BigDecimal newPrice) {
-		if (newPrice == null || newPrice.compareTo(BigDecimal.ZERO) < 0) {
-			logger.error("Se ha producido un error cambiando el precio del articulo con codigo: {}. El precio siempre ha de ser mayor a cero", this.code);
-			throw new InvalidArticlePriceException("El precio de un articulo siempre debe ser mayor a cero.");
+		if (newPrice != null) {
+			if (newPrice.compareTo(BigDecimal.ZERO) < 0) {
+				logger.error("Se ha producido un error cambiando el precio del articulo con codigo: {}. El precio siempre ha de ser mayor a cero", this.code);
+				throw new InvalidArticlePriceException("El precio de un articulo siempre debe ser mayor a cero.");
+			}
+			logger.trace("Se va a proceder a cambiar el precio del articulo con codigo {}. {} --> {}", this.code, this.price, newPrice);
+	
+			this.price = newPrice.setScale(2, RoundingMode.HALF_UP);
+			logger.debug("El precio del articulo con codigo {} ha cambiado a {}", this.code, this.price);
+			
+			this.updateLastModificationDate();
 		}
-		logger.trace("Se va a proceder a cambiar el precio del articulo con codigo {}. {} --> {}", this.code, this.price, newPrice);
-
-		this.price = newPrice;
-		logger.debug("El precio del articulo con codigo {} ha cambiado a {}", this.code, this.price);
-		
-		this.updateLastModificationDate();
 	}
 	
 	public void updateLastModificationDate () {
@@ -62,10 +65,6 @@ public class Article {
 
 	public LocalDateTime getLastModificationDate() {
 		return lastModificationDate;
-	}
-
-	public void setLastModificationDate(LocalDateTime lastModificationDate) {
-		this.lastModificationDate = lastModificationDate;
 	}
 
 	@Override

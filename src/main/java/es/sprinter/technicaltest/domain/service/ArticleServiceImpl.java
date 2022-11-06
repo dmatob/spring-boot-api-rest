@@ -1,12 +1,14 @@
 package es.sprinter.technicaltest.domain.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import es.sprinter.technicaltest.domain.Article;
@@ -26,7 +28,7 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	@CacheEvict(value="articles")
+	@CacheEvict(value="articles", allEntries = true)
 	public Article createArticle(Article article) {
 		
 		Article articleSearch = getArticle(article.getCode());
@@ -53,7 +55,7 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	@Cacheable("articles")
+	@Cacheable("article")
 	public Article getArticle(String code) {
 		
 		logger.info("Se va a proceder a obtener información del artículo con codigo: {}", code);
@@ -66,7 +68,10 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	@CacheEvict(value="articles", key="code")
+	@Caching(evict = {
+            @CacheEvict(value="articles", allEntries=true),
+            @CacheEvict(value="article", key = "#code")
+	})
 	public Article updateArticle(String code, Article article) {
 		
 		logger.debug("Se va a proceder a modificar el articulo con codigo: {}. Datos a modificar : {}", code, article);
@@ -76,8 +81,9 @@ public class ArticleServiceImpl implements ArticleService {
 			logger.error("Error actualizando el articulo con codigo: {}. El articulo no existe.", code);
 			throw new ArticleNotFoundException("No se puede actulizar el articulo con el codigo proporcionado");
 		}
-		article.updateLastModificationDate();
-		Article modifiedArticle = this.articleRepository.save(article);
+		Article articleToModify = new Article(currentArticle.getId(), 
+				article.getCode(), article.getDescription(), article.getPrice(), LocalDateTime.now());
+		Article modifiedArticle = this.articleRepository.save(articleToModify);
 		
 		logger.info("Se ha actualizado el articulo con codigo: {}.", code);
 		logger.trace("Resultado de la actualizacion del articulo con codigo: {}. {}: ", code, modifiedArticle);
@@ -86,7 +92,10 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	@CacheEvict(value="articles", key="code")
+	@Caching(evict = {
+            @CacheEvict(value="articles", allEntries=true),
+            @CacheEvict(value="article", key = "#code")
+	})
 	public Article updatePriceArticleByCode(String code, BigDecimal price) {
 		
 		logger.debug("Se va a proceder a modificar el precio del articulo con codigo: {}. Precio a modificar : {}", code, price);
@@ -106,7 +115,10 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	@CacheEvict(value="articles", key="code")
+	@Caching(evict = {
+            @CacheEvict(value="articles", allEntries=true),
+            @CacheEvict(value="article", key = "#code")
+	})
 	public void deleteArticleByCode(String code) {
 		
 		logger.debug("Se va a proceder a eliminar el articulo con codigo: {}", code);

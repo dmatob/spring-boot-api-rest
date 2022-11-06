@@ -19,6 +19,6 @@ public class ArticlesApplication {
 	
 	@Bean
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("articles");
+        return new ConcurrentMapCacheManager("articles", "article");
     }
 }
