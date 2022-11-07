@@ -35,7 +35,7 @@ public class ArticleEntity {
 		super();
 	}
 	
-	public ArticleEntity(Long id, String code, String description, BigDecimal price) {
+	public ArticleEntity(Long id, String code, String description, BigDecimal price, LocalDateTime lastModificationDate) {
 		super();
 		this.id = id;
 		this.code = code;

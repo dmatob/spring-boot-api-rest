@@ -8,10 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import es.sprinter.technicaltest.domain.exception.InvalidArticlePriceException;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode
 public class Article {
 
-	Logger logger = LoggerFactory.getLogger(Article.class);
+	private static final Logger LOG = LoggerFactory.getLogger(Article.class);
 	
 	private Long id;
 	private String code;
@@ -30,13 +32,13 @@ public class Article {
 	public void changePrice(BigDecimal newPrice) {
 		if (newPrice != null) {
 			if (newPrice.compareTo(BigDecimal.ZERO) < 0) {
-				logger.error("Se ha producido un error cambiando el precio del articulo con codigo: {}. El precio siempre ha de ser mayor a cero", this.code);
+				LOG.error("Se ha producido un error cambiando el precio del articulo con codigo: {}. El precio siempre ha de ser mayor a cero", this.code);
 				throw new InvalidArticlePriceException("El precio de un articulo siempre debe ser mayor a cero.");
 			}
-			logger.trace("Se va a proceder a cambiar el precio del articulo con codigo {}. {} --> {}", this.code, this.price, newPrice);
+			LOG.trace("Se va a proceder a cambiar el precio del articulo con codigo {}. {} --> {}", this.code, this.price, newPrice);
 	
 			this.price = newPrice.setScale(2, RoundingMode.HALF_UP);
-			logger.debug("El precio del articulo con codigo {} ha cambiado a {}", this.code, this.price);
+			LOG.debug("El precio del articulo con codigo {} ha cambiado a {}", this.code, this.price);
 			
 			this.updateLastModificationDate();
 		}
@@ -44,7 +46,7 @@ public class Article {
 	
 	public void updateLastModificationDate () {
 		this.lastModificationDate = LocalDateTime.now();
-		logger.debug("Se ha actualizado la fecha de ultima modificacion del articulo con codigo {}", this.code);
+		LOG.debug("Se ha actualizado la fecha de ultima modificacion del articulo con codigo {}", this.code);
 	}
 
 	public Long getId() {
@@ -72,6 +74,5 @@ public class Article {
 		return "Article [id=" + id + ", code=" + code + ", description=" + description + ", price=" + price
 				+ ", lastModificationDate=" + lastModificationDate + "]";
 	}
-
 	
 }

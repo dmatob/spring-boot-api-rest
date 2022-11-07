@@ -19,7 +19,7 @@ import es.sprinter.technicaltest.domain.repository.ArticleRepository;
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
-	Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ArticleServiceImpl.class);
 	
 	private final ArticleRepository articleRepository;
 
@@ -33,7 +33,7 @@ public class ArticleServiceImpl implements ArticleService {
 		
 		Article articleSearch = getArticle(article.getCode());
 		if (articleSearch != null) {
-			logger.error("No se puede dar de alta el articulo con codigo: {}. Articulo duplicado", article.getCode());
+			LOG.error("No se puede dar de alta el articulo con codigo: {}. Articulo duplicado", article.getCode());
 			throw new DuplicatedArticleException("El articulo ya existe");
 		}
 		
@@ -44,12 +44,12 @@ public class ArticleServiceImpl implements ArticleService {
 	@Cacheable("articles")
 	public List<Article> getAllArticles() {
 		
-		logger.info("Se va a proceder a obtener el listado de todos los articulos disponibles");
+		LOG.info("Se va a proceder a obtener el listado de todos los articulos disponibles");
 		
 		List<Article> lstArticles = this.articleRepository.findAll();
 		
-		logger.debug("Se han obtenido un total de {} resultados", lstArticles != null ? lstArticles.size() : 0);
-		logger.trace("Listado completo de articulos. {}", lstArticles);
+		LOG.debug("Se han obtenido un total de {} resultados", lstArticles);
+		LOG.trace("Listado completo de articulos. {}", lstArticles);
 		
 		return lstArticles;
 	}
@@ -58,12 +58,12 @@ public class ArticleServiceImpl implements ArticleService {
 	@Cacheable("article")
 	public Article getArticle(String code) {
 		
-		logger.info("Se va a proceder a obtener información del artículo con codigo: {}", code);
+		LOG.info("Se va a proceder a obtener información del artículo con codigo: {}", code);
 		
 		Article article = this.articleRepository.findByCode(code).orElse(null);
 		
-		logger.debug("La consulta del articulo con codigo: {} ¿ha devuelto datos? {}", code, article != null);
-		logger.trace("Informacion del articulo con codigo: {}. Datos: {}", code, article);
+		LOG.debug("La consulta del articulo con codigo: {} ¿ha devuelto datos? {}", code, article != null);
+		LOG.trace("Informacion del articulo con codigo: {}. Datos: {}", code, article);
 		return article;
 	}
 
@@ -74,19 +74,19 @@ public class ArticleServiceImpl implements ArticleService {
 	})
 	public Article updateArticle(String code, Article article) {
 		
-		logger.debug("Se va a proceder a modificar el articulo con codigo: {}. Datos a modificar : {}", code, article);
+		LOG.debug("Se va a proceder a modificar el articulo con codigo: {}. Datos a modificar : {}", code, article);
 		
 		Article currentArticle = getArticle(code);
 		if (currentArticle == null) {
-			logger.error("Error actualizando el articulo con codigo: {}. El articulo no existe.", code);
+			LOG.error("Error actualizando el articulo con codigo: {}. El articulo no existe.", code);
 			throw new ArticleNotFoundException("No se puede actulizar el articulo con el codigo proporcionado");
 		}
 		Article articleToModify = new Article(currentArticle.getId(), 
 				article.getCode(), article.getDescription(), article.getPrice(), LocalDateTime.now());
 		Article modifiedArticle = this.articleRepository.save(articleToModify);
 		
-		logger.info("Se ha actualizado el articulo con codigo: {}.", code);
-		logger.trace("Resultado de la actualizacion del articulo con codigo: {}. {}: ", code, modifiedArticle);
+		LOG.info("Se ha actualizado el articulo con codigo: {}.", code);
+		LOG.trace("Resultado de la actualizacion del articulo con codigo: {}. {}: ", code, modifiedArticle);
 		
 		return modifiedArticle;
 	}
@@ -98,18 +98,18 @@ public class ArticleServiceImpl implements ArticleService {
 	})
 	public Article updatePriceArticleByCode(String code, BigDecimal price) {
 		
-		logger.debug("Se va a proceder a modificar el precio del articulo con codigo: {}. Precio a modificar : {}", code, price);
+		LOG.debug("Se va a proceder a modificar el precio del articulo con codigo: {}. Precio a modificar : {}", code, price);
 		
 		Article article = getArticle(code);
 		if (article == null) {
-			logger.error("Error actualizando el precio del articulo con codigo: {}. El articulo no existe.", code);
+			LOG.error("Error actualizando el precio del articulo con codigo: {}. El articulo no existe.", code);
 			throw new ArticleNotFoundException("No se puede actulizar el precio del articulo con el codigo proporcionado");
 		}
 		article.changePrice(price);
 		Article modifiedArticle = this.articleRepository.save(article);
 		
-		logger.info("Se ha actualizado el precio del articulo con codigo: {}.", code);
-		logger.trace("Resultado de la actualizacion de precio del articulo con codigo: {}. {}", code, modifiedArticle);
+		LOG.info("Se ha actualizado el precio del articulo con codigo: {}.", code);
+		LOG.trace("Resultado de la actualizacion de precio del articulo con codigo: {}. {}", code, modifiedArticle);
 		
 		return modifiedArticle;
 	}
@@ -121,16 +121,16 @@ public class ArticleServiceImpl implements ArticleService {
 	})
 	public void deleteArticleByCode(String code) {
 		
-		logger.debug("Se va a proceder a eliminar el articulo con codigo: {}", code);
+		LOG.debug("Se va a proceder a eliminar el articulo con codigo: {}", code);
 		
 		Article article = getArticle(code);
 		if (article == null) {
-			logger.error("Error eliminando el articulo con codigo: {}. El articulo no existe", code);
+			LOG.error("Error eliminando el articulo con codigo: {}. El articulo no existe", code);
 			throw new ArticleNotFoundException("No se puede eliminar el articulo con el codigo proporcionado");
 		}
 		this.articleRepository.delete(article);
 		
-		logger.info("Se ha eliminado el articulo con codigo: {}", code);
+		LOG.info("Se ha eliminado el articulo con codigo: {}", code);
 	}
 
 }

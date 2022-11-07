@@ -1,12 +1,5 @@
 package es.sprinter.technicaltest.domain.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Arrays;
@@ -17,6 +10,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 
 import es.sprinter.technicaltest.domain.Article;
 import es.sprinter.technicaltest.domain.ArticleProvider;
@@ -28,24 +23,26 @@ class ArticleServiceImplTest {
 
 	private ArticleRepository articleRepository;
     private ArticleServiceImpl service;
-	
+    
 	@BeforeEach
     void setUp() {
-		articleRepository = mock(ArticleRepository.class);
+		articleRepository = Mockito.mock(ArticleRepository.class);
         service = new ArticleServiceImpl(articleRepository);
     }
 	
 	@Test
     void shouldCreateArticle_thenSaveIt() {
-        final Article article = ArticleProvider.getArticle();
-        service.createArticle(article);
-        verify(articleRepository).save(any(Article.class));
+        final Article article = ArticleProvider.getArticleToInsert();
+        Mockito.when(articleRepository.save(ArgumentMatchers.any(Article.class))).thenAnswer(i -> i.getArgument(0));
+        Article response = service.createArticle(article);
+        Mockito.verify(articleRepository).save(article);
+        Assertions.assertEquals(response, article);
     }
 	
 	@Test
     void shouldCreateArticle_thenThrowDuplicatedArticleException () {		
-		final Article article = ArticleProvider.getArticle();
-		when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.of(article));
+		final Article article = ArticleProvider.getArticleToInsert();
+		Mockito.when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.of(article));
         final Executable executable = () -> service.createArticle(article);
         Assertions.assertThrows(DuplicatedArticleException.class, executable);
     }
@@ -58,45 +55,49 @@ class ArticleServiceImplTest {
 		final Article article3 = ArticleProvider.getArticle();
 		final Article article4 = ArticleProvider.getArticle();
 		List<Article> articles = Arrays.asList(article0, article1, article2, article3, article4);
-		when(articleRepository.findAll()).thenReturn(articles);	
+		Mockito.when(articleRepository.findAll()).thenReturn(articles);	
 		List<Article> articlesResponse = service.getAllArticles();
-		assertEquals(articles, articlesResponse);
+		Assertions.assertEquals(articles, articlesResponse);
     }
 	
 	
 	@Test
     void shouldGetArticle_thenReturnData () {
 		final Article article = ArticleProvider.getArticle();
-		when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.of(article));	
+		Mockito.when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.of(article));	
 		Article returnedArticle = service.getArticle(article.getCode());
-		assertEquals(article.getCode(), returnedArticle.getCode());
+		Assertions.assertEquals(article.getCode(), returnedArticle.getCode());
     }
 	
 	
 	@Test
     void shouldGetArticle_thenReturnNull () {
 		String randomCode = "aaaaaaaaa";
-		when(articleRepository.findByCode(randomCode)).thenReturn(Optional.empty());	
+		Mockito.when(articleRepository.findByCode(randomCode)).thenReturn(Optional.empty());	
 		Article returnedArticle = service.getArticle(randomCode);
-		assertNull(returnedArticle);
+		Assertions.assertNull(returnedArticle);
     }
 	
 	
 	@Test
     void shouldUpdateArticle_thenSaveIt () {
-		final Article article = ArticleProvider.getArticle();
+		final Article article = ArticleProvider.getArticleToModify();
 		final Article newArticle = ArticleProvider.getArticle();
-		when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.of(article));
-        service.updateArticle(article.getCode(), newArticle);
-        verify(articleRepository).save(any(Article.class));
+		Mockito.when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.of(article));
+		Mockito.when(articleRepository.save(ArgumentMatchers.any(Article.class))).thenAnswer(i -> i.getArgument(0));
+        Article serviceResponse = service.updateArticle(article.getCode(), newArticle);
+        Mockito.verify(articleRepository).save(ArgumentMatchers.any(Article.class));
+        Assertions.assertEquals(serviceResponse.getId(), article.getId());
+        Assertions.assertEquals(serviceResponse.getCode(), newArticle.getCode());
+        Assertions.assertEquals(serviceResponse.getDescription(), newArticle.getDescription());
     }
 	
 	
 	@Test
     void shouldUpdateArticle_thenArticleNotFoundException () {
-		final Article article = ArticleProvider.getArticle();
+		final Article article = ArticleProvider.getArticleToModify();
 		final Article newArticle = ArticleProvider.getArticle();
-		when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.empty());
+		Mockito.when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.empty());
         final Executable executable = () -> service.updateArticle(article.getCode(), newArticle);
         Assertions.assertThrows(ArticleNotFoundException.class, executable);
     }
@@ -104,18 +105,24 @@ class ArticleServiceImplTest {
 	
 	@Test
     void shouldUpdatePriceArticleByCode_thenSaveIt () {
-		final Article article = ArticleProvider.getArticle();
+		final Article article = ArticleProvider.getArticleToModify();
 		BigDecimal newPrice = new BigDecimal(45.55d).setScale(2, RoundingMode.HALF_UP);
-		when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.of(article));
-        service.updatePriceArticleByCode(article.getCode(), newPrice);
-        verify(articleRepository).save(any(Article.class));
+		Mockito.when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.of(article));
+		Mockito.when(articleRepository.save(ArgumentMatchers.any(Article.class))).thenAnswer(i -> i.getArgument(0));
+        Article modifiedArticle = service.updatePriceArticleByCode(article.getCode(), newPrice);
+        Mockito.verify(articleRepository).save(ArgumentMatchers.any(Article.class));
+        
+        Assertions.assertEquals(modifiedArticle.getId(), article.getId());
+        Assertions.assertEquals(modifiedArticle.getCode(), article.getCode());
+        Assertions.assertEquals(modifiedArticle.getDescription(), article.getDescription());
+        Assertions.assertEquals(modifiedArticle.getPrice(), newPrice);
     }
 	
 	@Test
     void shouldUpdatePriceArticleByCode_thenArticleNotFoundException () {
-		final Article article = ArticleProvider.getArticle();
+		final Article article = ArticleProvider.getArticleToModify();
 		BigDecimal newPrice = new BigDecimal(45.55d).setScale(2, RoundingMode.HALF_UP);
-		when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.empty());
+		Mockito.when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.empty());
         final Executable executable = () -> service.updatePriceArticleByCode(article.getCode(), newPrice);
         Assertions.assertThrows(ArticleNotFoundException.class, executable);
     }
@@ -123,15 +130,15 @@ class ArticleServiceImplTest {
 	@Test
     void shouldDeleteArticleByCode_thenDeleteIt () {
 		final Article article = ArticleProvider.getArticle();
-		when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.of(article));
+		Mockito.when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.of(article));
 		service.deleteArticleByCode(article.getCode());
-        verify(articleRepository).delete(article);
+        Mockito.verify(articleRepository).delete(article);
     }
 	
 	@Test
     void shouldDeleteArticleByCode_thenArticleNotFoundException () {
 		final Article article = ArticleProvider.getArticle();
-		when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.empty());
+		Mockito.when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.empty());
         final Executable executable = () -> service.deleteArticleByCode(article.getCode());
         Assertions.assertThrows(ArticleNotFoundException.class, executable);
     }
