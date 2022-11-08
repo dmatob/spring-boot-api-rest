@@ -25,7 +25,7 @@ public class Article {
 		this.id = id;
 		this.code = code;
 		this.description = description;
-		this.price = price.setScale(2, RoundingMode.HALF_UP);
+		this.price = price != null ? price.setScale(2, RoundingMode.HALF_UP) : null;
 		this.lastModificationDate = lastModificationDate;
 	}
 
