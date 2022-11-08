@@ -26,10 +26,14 @@ public class Article {
 		this.code = code;
 		this.description = description;	
 		this.lastModificationDate = lastModificationDate;
-		changePrice(price);
+		changePrice(price, false);
 	}
 
 	public void changePrice(BigDecimal newPrice) {
+		this.changePrice(newPrice, true);
+	}
+	
+	private void changePrice(BigDecimal newPrice, boolean updateLastModificationDate) {
 		if (newPrice != null) {
 			if (newPrice.compareTo(BigDecimal.ZERO) < 0) {
 				LOG.error("Se ha producido un error cambiando el precio del articulo con codigo: {}. El precio siempre ha de ser mayor a cero", this.code);
@@ -40,7 +44,9 @@ public class Article {
 			this.price = newPrice.setScale(2, RoundingMode.HALF_UP);
 			LOG.debug("El precio del articulo con codigo {} ha cambiado a {}", this.code, this.price);
 			
-			this.updateLastModificationDate();
+			if (updateLastModificationDate) {
+				this.updateLastModificationDate();
+			}
 		}
 	}
 	
