@@ -78,6 +78,10 @@ public class ArticleEntity {
 	public LocalDateTime getLastModificationDate() {
 		return lastModificationDate;
 	}
+	
+	public void setLastModificationDate(LocalDateTime lastModificationDate) {
+		this.lastModificationDate = lastModificationDate;
+	}
 
 	@Override
 	public String toString() {
