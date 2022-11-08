@@ -42,6 +42,8 @@ public interface ArticleService {
 	 * @param article Objeto de dominio con la información del artículo modificado.
 	 * @return Objeto de dominio con la información del artículo modificado
 	 * @throws ArticleNotFoundException No existe artículo con el código indicado.
+	 * @trhows InvalidArticlePriceException Excepción lanzada si el precio es un
+	 *         valor negativo.
 	 */
 	Article updateArticle(String code, Article article);
 
@@ -52,6 +54,8 @@ public interface ArticleService {
 	 * @param price Nuevo precio del artículo
 	 * @return Objeto de dominio con la información del artículo modificado
 	 * @throws ArticleNotFoundException No existe artículo con el código indicado.
+	 * @trhows InvalidArticlePriceException Excepción lanzada si el precio es un
+	 *         valor negativo.
 	 */
 	Article updatePriceArticleByCode(String code, BigDecimal price);
 
