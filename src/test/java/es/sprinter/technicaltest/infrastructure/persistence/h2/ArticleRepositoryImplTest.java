@@ -51,7 +51,21 @@ class ArticleRepositoryImplTest {
 		List<Article> lstArticles = this.articleRepository.findAll();
 		
 		assertNotNull(lstArticles);
-		assertEquals(lstArticles, lstOriginalArticles);
+		assertEquals(lstArticles.size(), lstOriginalArticles.size());
+		assertEquals(lstArticles.get(0).getCode(), lstOriginalArticles.get(0).getCode());
+		assertEquals(lstArticles.get(0).getDescription(), lstOriginalArticles.get(0).getDescription());
+		assertEquals(lstArticles.get(0).getPrice(), lstOriginalArticles.get(0).getPrice());
+		assertEquals(lstArticles.get(0).getId(), lstOriginalArticles.get(0).getId());
+
+		assertEquals(lstArticles.get(1).getCode(), lstOriginalArticles.get(1).getCode());
+		assertEquals(lstArticles.get(1).getDescription(), lstOriginalArticles.get(1).getDescription());
+		assertEquals(lstArticles.get(1).getPrice(), lstOriginalArticles.get(1).getPrice());
+		assertEquals(lstArticles.get(1).getId(), lstOriginalArticles.get(1).getId());
+		
+		assertEquals(lstArticles.get(2).getCode(), lstOriginalArticles.get(2).getCode());
+		assertEquals(lstArticles.get(2).getDescription(), lstOriginalArticles.get(2).getDescription());
+		assertEquals(lstArticles.get(2).getPrice(), lstOriginalArticles.get(2).getPrice());
+		assertEquals(lstArticles.get(2).getId(), lstOriginalArticles.get(2).getId());
 	}
 
 	@Test
@@ -72,7 +86,12 @@ class ArticleRepositoryImplTest {
 		Article insertedArticle = articleRepository.save(article);
 		
 		final Optional<Article> result = articleRepository.findById(insertedArticle.getId());
-		assertEquals(insertedArticle, result.get());
+		
+		assertEquals(insertedArticle.getCode(), result.get().getCode());
+		assertEquals(insertedArticle.getDescription(), result.get().getDescription());
+		assertEquals(insertedArticle.getPrice(), result.get().getPrice());
+		assertEquals(insertedArticle.getId(), result.get().getId());
+		assertEquals(insertedArticle.getLastModificationDate(), result.get().getLastModificationDate());
 	}
 	
 	@Test
@@ -87,7 +106,12 @@ class ArticleRepositoryImplTest {
 		Article insertedArticle = articleRepository.save(article);
 		
 		final Optional<Article> result = articleRepository.findByCode(insertedArticle.getCode());
-		assertEquals(insertedArticle, result.get());
+		
+		assertEquals(insertedArticle.getCode(), result.get().getCode());
+		assertEquals(insertedArticle.getDescription(), result.get().getDescription());
+		assertEquals(insertedArticle.getPrice(), result.get().getPrice());
+		assertEquals(insertedArticle.getId(), result.get().getId());
+		assertEquals(insertedArticle.getLastModificationDate(), result.get().getLastModificationDate());
 	}
 	
 	@Test
