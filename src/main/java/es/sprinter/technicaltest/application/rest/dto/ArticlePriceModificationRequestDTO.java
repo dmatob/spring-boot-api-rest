@@ -3,13 +3,13 @@ package es.sprinter.technicaltest.application.rest.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.validation.constraints.Min;
+import javax.validation.constraints.DecimalMin;
 
 public class ArticlePriceModificationRequestDTO implements Serializable {
 	
 	private static final long serialVersionUID = 8592964280619408197L;
 		
-	@Min(0)
+	@DecimalMin(value="0.0", inclusive = true, message = "EL precio ha de ser un valor positivo")
 	private BigDecimal price;
 	
 	public BigDecimal getPrice() {
