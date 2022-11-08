@@ -42,7 +42,7 @@ public class Article {
 			LOG.trace("Se va a proceder a cambiar el precio del articulo con codigo {}. {} --> {}", this.code, this.price, newPrice);
 	
 			this.price = newPrice.setScale(2, RoundingMode.HALF_UP);
-			LOG.debug("El precio del articulo con codigo {} ha cambiado a {}", this.code, this.price);
+			LOG.trace("El precio del articulo con codigo {} ha cambiado a {}", this.code, this.price);
 			
 			if (updateLastModificationDate) {
 				this.updateLastModificationDate();
