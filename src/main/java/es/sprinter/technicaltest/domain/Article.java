@@ -24,9 +24,9 @@ public class Article {
 	public Article(Long id, String code, String description, BigDecimal price, LocalDateTime lastModificationDate) {
 		this.id = id;
 		this.code = code;
-		this.description = description;
-		this.price = price != null ? price.setScale(2, RoundingMode.HALF_UP) : null;
+		this.description = description;	
 		this.lastModificationDate = lastModificationDate;
+		changePrice(price);
 	}
 
 	public void changePrice(BigDecimal newPrice) {
