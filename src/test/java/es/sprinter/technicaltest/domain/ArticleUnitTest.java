@@ -2,6 +2,7 @@ package es.sprinter.technicaltest.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
@@ -87,8 +88,9 @@ class ArticleUnitTest {
 		article.updateLastModificationDate();
 		
 		// La fecha de modificación se modifica tras la modificación del precio y es actual.
-		assertTrue(article.getLastModificationDate().isBefore(LocalDateTime.now()) 
-				&& article.getLastModificationDate().isAfter(LocalDateTime.now().minusMinutes(5)));
+		assertNotNull(article.getLastModificationDate());
+		assertTrue(article.getLastModificationDate().compareTo(LocalDateTime.now()) <= 0);
+		assertTrue(article.getLastModificationDate().compareTo(LocalDateTime.now().minusMinutes(2)) >= 0);
 		
 		// Nos e ha modificado ninguna otra propiedad del articulo
 		assertEquals(prevId, article.getId());
