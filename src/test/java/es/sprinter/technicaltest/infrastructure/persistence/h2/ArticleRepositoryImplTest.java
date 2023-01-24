@@ -97,7 +97,7 @@ class ArticleRepositoryImplTest {
 	@Test
 	void shouldFindById_thenReturnEmpty() {
 		final Optional<Article> result = articleRepository.findById(1l);
-		assertTrue(result.isEmpty());
+		assertTrue(!result.isPresent());
 	}
 	
 	@Test
@@ -117,7 +117,7 @@ class ArticleRepositoryImplTest {
 	@Test
 	void shouldFindByCode_thenReturnEmpty() {
 		final Optional<Article> result = articleRepository.findByCode("aabb");
-		assertTrue(result.isEmpty());
+		assertTrue(!result.isPresent());
 	}
 	
 	@Test
