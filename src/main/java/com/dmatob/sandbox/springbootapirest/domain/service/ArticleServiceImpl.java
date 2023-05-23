@@ -9,14 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
-import org.springframework.stereotype.Service;
 
 import com.dmatob.sandbox.springbootapirest.domain.Article;
 import com.dmatob.sandbox.springbootapirest.domain.exception.ArticleNotFoundException;
 import com.dmatob.sandbox.springbootapirest.domain.exception.DuplicatedArticleException;
 import com.dmatob.sandbox.springbootapirest.domain.repository.ArticleRepository;
 
-@Service
 public class ArticleServiceImpl implements ArticleService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ArticleServiceImpl.class);
