@@ -1,4 +1,4 @@
-package com.dmatob.sandbox.springbootapirest.application.rest;
+package com.dmatob.sandbox.springbootapirest.infrastructure.api;
 
 import java.util.Random;
 
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.dmatob.sandbox.springbootapirest.domain.Article;
+import com.dmatob.sandbox.springbootapirest.domain.model.Article;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import com.dmatob.sandbox.springbootapirest.domain.Article;
+import com.dmatob.sandbox.springbootapirest.domain.model.Article;
 
 @Component
 public class ArticleEntityMapper {

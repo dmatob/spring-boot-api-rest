@@ -1,4 +1,4 @@
-package com.dmatob.sandbox.springbootapirest.domain.service;
+package com.dmatob.sandbox.springbootapirest.application.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -10,18 +10,18 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 
-import com.dmatob.sandbox.springbootapirest.domain.Article;
-import com.dmatob.sandbox.springbootapirest.domain.exception.ArticleNotFoundException;
-import com.dmatob.sandbox.springbootapirest.domain.exception.DuplicatedArticleException;
+import com.dmatob.sandbox.springbootapirest.application.exception.ArticleNotFoundException;
+import com.dmatob.sandbox.springbootapirest.application.exception.DuplicatedArticleException;
+import com.dmatob.sandbox.springbootapirest.domain.model.Article;
 import com.dmatob.sandbox.springbootapirest.domain.repository.ArticleRepository;
 
-public class ArticleServiceImpl implements ArticleService {
+public class ArticleAppServiceImpl implements ArticleAppService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ArticleServiceImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ArticleAppServiceImpl.class);
 	
 	private final ArticleRepository articleRepository;
 
-	public ArticleServiceImpl(ArticleRepository articleRepository) {
+	public ArticleAppServiceImpl(ArticleRepository articleRepository) {
 		this.articleRepository = articleRepository;
 	}
 

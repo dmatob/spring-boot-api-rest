@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.dmatob.sandbox.springbootapirest.application.rest.ArticleController;
+import com.dmatob.sandbox.springbootapirest.application.service.ArticleAppService;
 import com.dmatob.sandbox.springbootapirest.domain.repository.ArticleRepository;
-import com.dmatob.sandbox.springbootapirest.domain.service.ArticleService;
+import com.dmatob.sandbox.springbootapirest.infrastructure.api.ArticleController;
 import com.dmatob.sandbox.springbootapirest.infrastructure.persistence.h2.ArticleRepositoryJPA;
 
 @ExtendWith(SpringExtension.class)
@@ -21,7 +21,7 @@ class ArticlesApplicationTests {
   ArticleController articleController;
   
   @Autowired
-  ArticleService articleService;
+  ArticleAppService articleService;
   
   @Autowired
   ArticleRepository articleRepository;

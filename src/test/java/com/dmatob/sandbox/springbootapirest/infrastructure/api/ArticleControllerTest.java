@@ -1,4 +1,4 @@
-package com.dmatob.sandbox.springbootapirest.application.rest;
+package com.dmatob.sandbox.springbootapirest.infrastructure.api;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,18 +19,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.dmatob.sandbox.springbootapirest.domain.Article;
-import com.dmatob.sandbox.springbootapirest.domain.ArticleProvider;
-import com.dmatob.sandbox.springbootapirest.domain.exception.ArticleNotFoundException;
-import com.dmatob.sandbox.springbootapirest.domain.exception.DuplicatedArticleException;
-import com.dmatob.sandbox.springbootapirest.domain.service.ArticleService;
+import com.dmatob.sandbox.springbootapirest.application.exception.ArticleNotFoundException;
+import com.dmatob.sandbox.springbootapirest.application.exception.DuplicatedArticleException;
+import com.dmatob.sandbox.springbootapirest.application.service.ArticleAppService;
+import com.dmatob.sandbox.springbootapirest.domain.model.Article;
+import com.dmatob.sandbox.springbootapirest.domain.model.ArticleProvider;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ArticleController.class)
 class ArticleControllerTest {
 
 	@MockBean
-	ArticleService articleService;
+	ArticleAppService articleService;
 
 	@MockBean
 	ArticleDTOMapper articleDTOMapper;

@@ -1,4 +1,4 @@
-package com.dmatob.sandbox.springbootapirest.domain.service;
+package com.dmatob.sandbox.springbootapirest.application.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,21 +13,21 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
-import com.dmatob.sandbox.springbootapirest.domain.Article;
-import com.dmatob.sandbox.springbootapirest.domain.ArticleProvider;
-import com.dmatob.sandbox.springbootapirest.domain.exception.ArticleNotFoundException;
-import com.dmatob.sandbox.springbootapirest.domain.exception.DuplicatedArticleException;
+import com.dmatob.sandbox.springbootapirest.application.exception.ArticleNotFoundException;
+import com.dmatob.sandbox.springbootapirest.application.exception.DuplicatedArticleException;
+import com.dmatob.sandbox.springbootapirest.domain.model.Article;
+import com.dmatob.sandbox.springbootapirest.domain.model.ArticleProvider;
 import com.dmatob.sandbox.springbootapirest.domain.repository.ArticleRepository;
 
-class ArticleServiceImplTest {
+class ArticleAppServiceImplTest {
 
 	private ArticleRepository articleRepository;
-    private ArticleServiceImpl service;
+    private ArticleAppServiceImpl service;
     
 	@BeforeEach
     void setUp() {
 		articleRepository = Mockito.mock(ArticleRepository.class);
-        service = new ArticleServiceImpl(articleRepository);
+        service = new ArticleAppServiceImpl(articleRepository);
     }
 	
 	@Test

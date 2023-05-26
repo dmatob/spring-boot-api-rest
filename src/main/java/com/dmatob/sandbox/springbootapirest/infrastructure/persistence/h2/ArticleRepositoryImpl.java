@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.dmatob.sandbox.springbootapirest.domain.Article;
+import com.dmatob.sandbox.springbootapirest.domain.model.Article;
 import com.dmatob.sandbox.springbootapirest.domain.repository.ArticleRepository;
 
 @Repository

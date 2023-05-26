@@ -1,11 +1,11 @@
-package com.dmatob.sandbox.springbootapirest.domain.service;
+package com.dmatob.sandbox.springbootapirest.application.service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.dmatob.sandbox.springbootapirest.domain.Article;
+import com.dmatob.sandbox.springbootapirest.domain.model.Article;
 
-public interface ArticleService {
+public interface ArticleAppService {
 
 	/**
 	 * Método que gestiona el alta de un nuevo artículo.

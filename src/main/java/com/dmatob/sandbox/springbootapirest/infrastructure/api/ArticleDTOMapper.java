@@ -1,13 +1,13 @@
-package com.dmatob.sandbox.springbootapirest.application.rest;
+package com.dmatob.sandbox.springbootapirest.infrastructure.api;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 
-import com.dmatob.sandbox.springbootapirest.application.rest.dto.ArticleDTO;
-import com.dmatob.sandbox.springbootapirest.application.rest.dto.ArticleModificationRequestDTO;
-import com.dmatob.sandbox.springbootapirest.domain.Article;
+import com.dmatob.sandbox.springbootapirest.domain.model.Article;
+import com.dmatob.sandbox.springbootapirest.infrastructure.api.dto.ArticleDTO;
+import com.dmatob.sandbox.springbootapirest.infrastructure.api.dto.ArticleModificationRequestDTO;
 	
 public class ArticleDTOMapper {
 	
@@ -26,7 +26,12 @@ public class ArticleDTOMapper {
 	public static Article fromArticleDTO (ArticleModificationRequestDTO articleDTO) {
 		Article article = null;
 		if (articleDTO != null) {
-			article = new Article(null, articleDTO.getCode(), articleDTO.getDescription(), articleDTO.getPrice(), null);
+			article = Article
+						.builder()
+						.code(articleDTO.getCode())
+						.description(articleDTO.getDescription())
+						.price(articleDTO.getPrice())
+						.build();
 		}
 		return article;
 	}

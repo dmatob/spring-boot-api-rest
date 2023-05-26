@@ -1,4 +1,4 @@
-package com.dmatob.sandbox.springbootapirest.domain;
+package com.dmatob.sandbox.springbootapirest.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

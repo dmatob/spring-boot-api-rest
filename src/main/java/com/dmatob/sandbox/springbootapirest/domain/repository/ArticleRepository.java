@@ -3,7 +3,7 @@ package com.dmatob.sandbox.springbootapirest.domain.repository;
 import java.util.List;
 import java.util.Optional;
 
-import com.dmatob.sandbox.springbootapirest.domain.Article;
+import com.dmatob.sandbox.springbootapirest.domain.model.Article;
 
 public interface ArticleRepository {
 	

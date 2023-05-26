@@ -1,4 +1,4 @@
-package com.dmatob.sandbox.springbootapirest.domain;
+package com.dmatob.sandbox.springbootapirest.domain.model;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -9,9 +9,10 @@ import org.slf4j.LoggerFactory;
 
 import com.dmatob.sandbox.springbootapirest.domain.exception.InvalidArticlePriceException;
 
-import lombok.EqualsAndHashCode;
+import lombok.Builder;
+import lombok.Getter;
 
-@EqualsAndHashCode
+@Getter
 public class Article {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Article.class);
@@ -22,6 +23,7 @@ public class Article {
 	private BigDecimal price;
 	private LocalDateTime lastModificationDate;
 
+	@Builder
 	public Article(Long id, String code, String description, BigDecimal price, LocalDateTime lastModificationDate) {
 		this.id = id;
 		this.code = code;
@@ -54,32 +56,6 @@ public class Article {
 	public void updateLastModificationDate () {
 		this.lastModificationDate = LocalDateTime.now();
 		LOG.debug("Se ha actualizado la fecha de ultima modificacion del articulo con codigo {}", this.code);
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public BigDecimal getPrice() {
-		return price;
-	}
-
-	public LocalDateTime getLastModificationDate() {
-		return lastModificationDate;
-	}
-
-	@Override
-	public String toString() {
-		return "Article [id=" + id + ", code=" + code + ", description=" + description + ", price=" + price
-				+ ", lastModificationDate=" + lastModificationDate + "]";
 	}
 	
 }

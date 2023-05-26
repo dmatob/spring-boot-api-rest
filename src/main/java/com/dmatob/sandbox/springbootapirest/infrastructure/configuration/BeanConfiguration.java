@@ -5,16 +5,16 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import com.dmatob.sandbox.springbootapirest.ArticlesApplication;
+import com.dmatob.sandbox.springbootapirest.application.service.ArticleAppService;
+import com.dmatob.sandbox.springbootapirest.application.service.ArticleAppServiceImpl;
 import com.dmatob.sandbox.springbootapirest.domain.repository.ArticleRepository;
-import com.dmatob.sandbox.springbootapirest.domain.service.ArticleService;
-import com.dmatob.sandbox.springbootapirest.domain.service.ArticleServiceImpl;
 
 @Configuration
 @ComponentScan(basePackageClasses = ArticlesApplication.class)
 public class BeanConfiguration {
 
     @Bean
-    ArticleService articleService(final ArticleRepository articleRepository) {
-        return new ArticleServiceImpl(articleRepository);
+    ArticleAppService articleService(final ArticleRepository articleRepository) {
+        return new ArticleAppServiceImpl(articleRepository);
     }
 }

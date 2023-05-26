@@ -1,4 +1,4 @@
-package com.dmatob.sandbox.springbootapirest.domain.exception;
+package com.dmatob.sandbox.springbootapirest.application.exception;
 
 public class ArticleNotFoundException extends RuntimeException {
 

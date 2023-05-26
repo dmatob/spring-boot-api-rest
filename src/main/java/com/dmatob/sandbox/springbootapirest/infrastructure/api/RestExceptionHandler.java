@@ -1,4 +1,4 @@
-package com.dmatob.sandbox.springbootapirest.application.rest;
+package com.dmatob.sandbox.springbootapirest.infrastructure.api;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.dmatob.sandbox.springbootapirest.domain.exception.ArticleNotFoundException;
-import com.dmatob.sandbox.springbootapirest.domain.exception.DuplicatedArticleException;
+import com.dmatob.sandbox.springbootapirest.application.exception.ArticleNotFoundException;
+import com.dmatob.sandbox.springbootapirest.application.exception.DuplicatedArticleException;
 import com.dmatob.sandbox.springbootapirest.domain.exception.InvalidArticlePriceException;
 
 @ControllerAdvice

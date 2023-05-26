@@ -1,4 +1,4 @@
-package com.dmatob.sandbox.springbootapirest.application.rest;
+package com.dmatob.sandbox.springbootapirest.infrastructure.api;
 
 import java.util.List;
 
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dmatob.sandbox.springbootapirest.application.rest.dto.ArticleDTO;
-import com.dmatob.sandbox.springbootapirest.application.rest.dto.ArticleModificationRequestDTO;
-import com.dmatob.sandbox.springbootapirest.application.rest.dto.ArticlePriceModificationRequestDTO;
-import com.dmatob.sandbox.springbootapirest.domain.service.ArticleService;
+import com.dmatob.sandbox.springbootapirest.application.service.ArticleAppService;
+import com.dmatob.sandbox.springbootapirest.infrastructure.api.dto.ArticleDTO;
+import com.dmatob.sandbox.springbootapirest.infrastructure.api.dto.ArticleModificationRequestDTO;
+import com.dmatob.sandbox.springbootapirest.infrastructure.api.dto.ArticlePriceModificationRequestDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,10 +36,10 @@ public class ArticleController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ArticleController.class);
 
-	private final ArticleService articleService;
+	private final ArticleAppService articleAppService;
 
-	public ArticleController(ArticleService articleService) {
-		this.articleService = articleService;
+	public ArticleController(ArticleAppService articleService) {
+		this.articleAppService = articleService;
 	}
 
 	
@@ -53,7 +53,7 @@ public class ArticleController {
 		LOG.info("Llamada a la API de articulos para crear un nuevo articulo");
 		return new ResponseEntity<>(
 				ArticleDTOMapper.toArticleDTO(
-						this.articleService.createArticle(ArticleDTOMapper.fromArticleDTO(articleDataDTO))),
+						this.articleAppService.createArticle(ArticleDTOMapper.fromArticleDTO(articleDataDTO))),
 				HttpStatus.CREATED);
 	}
 
@@ -66,7 +66,7 @@ public class ArticleController {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<List<ArticleDTO>> getAllArticles() {
 		LOG.info("Llamada a la API de articulos para obtener el listado de todos los articulos disponibles");
-		return ResponseEntity.ok(ArticleDTOMapper.toListOfArticleDTOs(this.articleService.getAllArticles()));
+		return ResponseEntity.ok(ArticleDTOMapper.toListOfArticleDTOs(this.articleAppService.getAllArticles()));
 	}
 	
 
@@ -78,7 +78,7 @@ public class ArticleController {
 	@GetMapping(value = "/{articleCode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<ArticleDTO> getArticleByCode(@PathVariable final String articleCode) {
 		LOG.info("Llamada a la API de articulos para obtener informacion del articulo con codigo {}", articleCode);
-		return ResponseEntity.ok(ArticleDTOMapper.toArticleDTO(this.articleService.getArticle(articleCode)));
+		return ResponseEntity.ok(ArticleDTOMapper.toArticleDTO(this.articleAppService.getArticle(articleCode)));
 	}
 	
 
@@ -94,7 +94,7 @@ public class ArticleController {
 		LOG.info("Llamada a la API de articulos para modificar la informacion del articulo con codigo: {}",
 				articleCode);
 		return new ResponseEntity<>(ArticleDTOMapper.toArticleDTO(
-				this.articleService.updateArticle(articleCode, ArticleDTOMapper.fromArticleDTO(articleDataDTO))),
+				this.articleAppService.updateArticle(articleCode, ArticleDTOMapper.fromArticleDTO(articleDataDTO))),
 				HttpStatus.OK);
 	}
 	
@@ -111,7 +111,7 @@ public class ArticleController {
 		LOG.info("Llamada a la API de articulos para modificar el precio del articulo con codigo: {}", articleCode);
 		return new ResponseEntity<>(
 				ArticleDTOMapper.toArticleDTO(
-						this.articleService.updatePriceArticleByCode(articleCode, articleDataDTO.getPrice())),
+						this.articleAppService.updatePriceArticleByCode(articleCode, articleDataDTO.getPrice())),
 				HttpStatus.OK);
 	}
 
@@ -124,7 +124,7 @@ public class ArticleController {
 	@DeleteMapping(value = "/{articleCode}")
 	ResponseEntity<Void> deleteArticle(@PathVariable final String articleCode) {
 		LOG.info("Llamada a la API de articulos para eliminar el articulo con codigo: {}", articleCode);
-		this.articleService.deleteArticleByCode(articleCode);
+		this.articleAppService.deleteArticleByCode(articleCode);
 		return ResponseEntity.ok().build();
 	}
 

@@ -15,8 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import com.dmatob.sandbox.springbootapirest.domain.Article;
-import com.dmatob.sandbox.springbootapirest.domain.ArticleProvider;
+import com.dmatob.sandbox.springbootapirest.domain.model.Article;
+import com.dmatob.sandbox.springbootapirest.domain.model.ArticleProvider;
 import com.dmatob.sandbox.springbootapirest.domain.repository.ArticleRepository;
 
 @SpringJUnitConfig

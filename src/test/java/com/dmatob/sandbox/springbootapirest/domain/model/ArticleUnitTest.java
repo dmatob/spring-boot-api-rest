@@ -1,4 +1,4 @@
-package com.dmatob.sandbox.springbootapirest.domain;
+package com.dmatob.sandbox.springbootapirest.domain.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
