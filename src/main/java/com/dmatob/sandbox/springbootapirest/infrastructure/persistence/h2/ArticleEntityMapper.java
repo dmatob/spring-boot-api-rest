@@ -16,7 +16,13 @@ public class ArticleEntityMapper {
 	public Article toArticle (ArticleEntity articleEntity) {
 		Article article = null;
 		if (articleEntity != null) {
-			article = new Article(articleEntity.getId(), articleEntity.getCode(), articleEntity.getDescription(), articleEntity.getPrice(), articleEntity.getLastModificationDate());
+			article = Article.builder()
+			.id(articleEntity.getId())
+			.code(articleEntity.getCode())
+			.description(articleEntity.getDescription())
+			.price(articleEntity.getPrice())
+			.lastModificationDate(articleEntity.getLastModificationDate())
+			.build();
 		}
 		return article;
 	}

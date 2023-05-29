@@ -24,7 +24,7 @@ public class Article {
 	private LocalDateTime lastModificationDate;
 
 	@Builder
-	public Article(Long id, String code, String description, BigDecimal price, LocalDateTime lastModificationDate) {
+	private Article(Long id, String code, String description, BigDecimal price, LocalDateTime lastModificationDate) {
 		this.id = id;
 		this.code = code;
 		this.description = description;	

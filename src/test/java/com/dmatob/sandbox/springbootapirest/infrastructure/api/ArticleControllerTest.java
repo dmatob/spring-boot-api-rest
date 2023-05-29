@@ -41,29 +41,35 @@ class ArticleControllerTest {
 	@Test
 	void shouldCreateArticle_thenReturnArticleOk() throws Exception {
 		Article article = ArticleProvider.getArticleToInsert();
-		Article articleWithId = new Article(1l, article.getCode(), article.getDescription(), article.getPrice(), null);
+		Article articleWithId = Article.builder()
+				.id(1l)
+				.code(article.getCode())
+				.description(article.getDescription())
+				.price(article.getPrice())
+				.build();
 		Mockito.when(articleService.createArticle(ArgumentMatchers.any(Article.class))).thenReturn(articleWithId);
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/articles")
-		           .contentType(MediaType.APPLICATION_JSON)
-		           .content(ArticleJsonProvider.getArticleJSON(article))
-		           .accept(MediaType.APPLICATION_JSON))
-			.andExpect(MockMvcResultMatchers.status().isCreated())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
-	        .andExpect(MockMvcResultMatchers.jsonPath("$.code", Matchers.is(article.getCode())));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(ArticleJsonProvider.getArticleJSON(article))
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isCreated())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.code", Matchers.is(article.getCode())));
 	}
-	
+
 	@Test
 	void shouldCreateArticle_thenDuplicatedArticleException() throws Exception {
 		Article article = ArticleProvider.getArticleToInsert();
-		Mockito.when(articleService.createArticle(ArgumentMatchers.any(Article.class))).thenThrow(DuplicatedArticleException.class);
+		Mockito.when(articleService.createArticle(ArgumentMatchers.any(Article.class)))
+				.thenThrow(DuplicatedArticleException.class);
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/articles")
-		           .contentType(MediaType.APPLICATION_JSON)
-		           .content(ArticleJsonProvider.getArticleJSON(article))
-		           .accept(MediaType.APPLICATION_JSON))
-			.andExpect(MockMvcResultMatchers.status().isBadRequest())
-			.andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(ArticleJsonProvider.getArticleJSON(article))
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest())
+				.andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
 	}
 
 	@Test
@@ -110,75 +116,81 @@ class ArticleControllerTest {
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
 	}
-	
+
 	@Test
 	void shouldUpdateArticle_thenReturnOk() throws Exception {
 		Article article = ArticleProvider.getArticleToModify();
-		Mockito.when(articleService.updateArticle(ArgumentMatchers.any(String.class), ArgumentMatchers.any(Article.class))).thenReturn(article);
+		Mockito.when(
+				articleService.updateArticle(ArgumentMatchers.any(String.class), ArgumentMatchers.any(Article.class)))
+				.thenReturn(article);
 
 		mockMvc.perform(MockMvcRequestBuilders.put("/articles/example-code")
-		           .contentType(MediaType.APPLICATION_JSON)
-		           .content(ArticleJsonProvider.getArticleJSON(article))
-		           .accept(MediaType.APPLICATION_JSON))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
-	        .andExpect(MockMvcResultMatchers.jsonPath("$.code", Matchers.is(article.getCode())));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(ArticleJsonProvider.getArticleJSON(article))
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.code", Matchers.is(article.getCode())));
 	}
-	
+
 	@Test
 	void shouldUpdateArticle_thenArticleNotFoundException() throws Exception {
 		Article article = ArticleProvider.getArticleToInsert();
-		Mockito.when(articleService.updateArticle(ArgumentMatchers.any(String.class), ArgumentMatchers.any(Article.class))).thenThrow(ArticleNotFoundException.class);
+		Mockito.when(
+				articleService.updateArticle(ArgumentMatchers.any(String.class), ArgumentMatchers.any(Article.class)))
+				.thenThrow(ArticleNotFoundException.class);
 
 		mockMvc.perform(MockMvcRequestBuilders.put("/articles/example-code")
-		           .contentType(MediaType.APPLICATION_JSON)
-		           .content(ArticleJsonProvider.getArticleJSON(article))
-		           .accept(MediaType.APPLICATION_JSON))
-			.andExpect(MockMvcResultMatchers.status().isNotFound())
-			.andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(ArticleJsonProvider.getArticleJSON(article))
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isNotFound())
+				.andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
 	}
-	
+
 	@Test
 	void shouldUpdatePriceArticle_thenReturnOk() throws Exception {
 		Article article = ArticleProvider.getArticleToModify();
-		Mockito.when(articleService.updatePriceArticleByCode(ArgumentMatchers.any(String.class), ArgumentMatchers.any(BigDecimal.class))).thenReturn(article);
+		Mockito.when(articleService.updatePriceArticleByCode(ArgumentMatchers.any(String.class),
+				ArgumentMatchers.any(BigDecimal.class))).thenReturn(article);
 
 		mockMvc.perform(MockMvcRequestBuilders.patch("/articles/example-code/price")
-		           .contentType(MediaType.APPLICATION_JSON)
-		           .content(ArticleJsonProvider.getArticleJSON(article))
-		           .accept(MediaType.APPLICATION_JSON))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
-	        .andExpect(MockMvcResultMatchers.jsonPath("$.code", Matchers.is(article.getCode())));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(ArticleJsonProvider.getArticleJSON(article))
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.code", Matchers.is(article.getCode())));
 	}
-	
+
 	@Test
 	void shouldUpdatePriceArticle_thenArticleNotFoundException() throws Exception {
 		Article article = ArticleProvider.getArticleToInsert();
-		Mockito.when(articleService.updatePriceArticleByCode(ArgumentMatchers.any(String.class), ArgumentMatchers.any(BigDecimal.class))).thenThrow(ArticleNotFoundException.class);
+		Mockito.when(articleService.updatePriceArticleByCode(ArgumentMatchers.any(String.class),
+				ArgumentMatchers.any(BigDecimal.class))).thenThrow(ArticleNotFoundException.class);
 
 		mockMvc.perform(MockMvcRequestBuilders.patch("/articles/example-code/price")
-		           .contentType(MediaType.APPLICATION_JSON)
-		           .content(ArticleJsonProvider.getArticleJSON(article))
-		           .accept(MediaType.APPLICATION_JSON))
-			.andExpect(MockMvcResultMatchers.status().isNotFound())
-			.andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(ArticleJsonProvider.getArticleJSON(article))
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isNotFound())
+				.andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
 	}
-	
-	
+
 	@Test
 	void shouldDeleteArticle_thenReturnOk() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.delete("/articles/example-code"))
-			.andExpect(MockMvcResultMatchers.status().isOk());
+				.andExpect(MockMvcResultMatchers.status().isOk());
 	}
-	
+
 	@Test
 	void shouldDeleteArticle_thenArticleNotFoundException() throws Exception {
-		Mockito.doThrow(new ArticleNotFoundException("Articulo no encontrado")).when(articleService).deleteArticleByCode(ArgumentMatchers.any(String.class));
+		Mockito.doThrow(new ArticleNotFoundException("Articulo no encontrado")).when(articleService)
+				.deleteArticleByCode(ArgumentMatchers.any(String.class));
 
 		mockMvc.perform(MockMvcRequestBuilders.delete("/articles/example-code"))
-			.andExpect(MockMvcResultMatchers.status().isNotFound())
-			.andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
+				.andExpect(MockMvcResultMatchers.status().isNotFound())
+				.andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
 	}
 
 }

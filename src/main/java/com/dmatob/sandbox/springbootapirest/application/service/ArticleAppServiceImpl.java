@@ -79,8 +79,13 @@ public class ArticleAppServiceImpl implements ArticleAppService {
 			LOG.error("Error actualizando el articulo con codigo: {}. El articulo no existe.", code);
 			throw new ArticleNotFoundException("No se puede actulizar el articulo con el codigo proporcionado");
 		}
-		Article articleToModify = new Article(currentArticle.getId(), 
-				article.getCode(), article.getDescription(), article.getPrice(), LocalDateTime.now());
+		Article articleToModify = Article.builder()
+				.id(currentArticle.getId())
+				.code(article.getCode())
+				.description(article.getDescription())
+				.price(article.getPrice())
+				.lastModificationDate(LocalDateTime.now())
+				.build();
 		Article modifiedArticle = this.articleRepository.save(articleToModify);
 		
 		LOG.info("Se ha actualizado el articulo con codigo: {}.", code);
