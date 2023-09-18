@@ -11,7 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.dmatob.sandbox.springbootapirest.application.service.ArticleAppService;
 import com.dmatob.sandbox.springbootapirest.domain.repository.ArticleRepository;
 import com.dmatob.sandbox.springbootapirest.infrastructure.api.ArticleController;
-import com.dmatob.sandbox.springbootapirest.infrastructure.persistence.h2.ArticleRepositoryJPA;
+import com.dmatob.sandbox.springbootapirest.infrastructure.persistence.h2.repository.jpa.ArticleRepositoryJPA;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest

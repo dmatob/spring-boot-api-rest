@@ -8,6 +8,7 @@ import java.util.List;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +25,16 @@ import com.dmatob.sandbox.springbootapirest.application.exception.DuplicatedArti
 import com.dmatob.sandbox.springbootapirest.application.service.ArticleAppService;
 import com.dmatob.sandbox.springbootapirest.domain.model.Article;
 import com.dmatob.sandbox.springbootapirest.domain.model.ArticleProvider;
+import com.dmatob.sandbox.springbootapirest.infrastructure.api.mapper.ArticleDTOMapper;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ArticleController.class)
 class ArticleControllerTest {
 
-	@MockBean
-	ArticleAppService articleService;
+	private ArticleDTOMapper articleDTOMapper = Mappers.getMapper(ArticleDTOMapper.class);
 
 	@MockBean
-	ArticleDTOMapper articleDTOMapper;
+	ArticleAppService articleService;
 
 	@Autowired
 	MockMvc mockMvc;
@@ -51,7 +52,7 @@ class ArticleControllerTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/articles")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(ArticleJsonProvider.getArticleJSON(article))
+				.content(ArticleJsonProvider.getArticleJSON(articleDTOMapper.toArticleModificationRequestDTO(article)))
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isCreated())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
@@ -66,7 +67,7 @@ class ArticleControllerTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/articles")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(ArticleJsonProvider.getArticleJSON(article))
+				.content(ArticleJsonProvider.getArticleJSON(articleDTOMapper.toArticleModificationRequestDTO(article)))
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isBadRequest())
 				.andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
@@ -126,7 +127,7 @@ class ArticleControllerTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.put("/articles/example-code")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(ArticleJsonProvider.getArticleJSON(article))
+				.content(ArticleJsonProvider.getArticleJSON(articleDTOMapper.toArticleModificationRequestDTO(article)))
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
@@ -142,7 +143,7 @@ class ArticleControllerTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.put("/articles/example-code")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(ArticleJsonProvider.getArticleJSON(article))
+				.content(ArticleJsonProvider.getArticleJSON(articleDTOMapper.toArticleModificationRequestDTO(article)))
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isNotFound())
 				.andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
@@ -156,7 +157,7 @@ class ArticleControllerTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.patch("/articles/example-code/price")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(ArticleJsonProvider.getArticleJSON(article))
+				.content(ArticleJsonProvider.getArticleJSON(articleDTOMapper.toArticleModificationRequestDTO(article)))
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
@@ -171,7 +172,7 @@ class ArticleControllerTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.patch("/articles/example-code/price")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(ArticleJsonProvider.getArticleJSON(article))
+				.content(ArticleJsonProvider.getArticleJSON(articleDTOMapper.toArticleModificationRequestDTO(article)))
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isNotFound())
 				.andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());

@@ -13,7 +13,9 @@ public interface ArticleRepository {
 	
 	Optional<Article> findByCode(String code);
 	
-	Article save(Article article);
+	Article insert(Article article);
+
+	Article update(Long idArticle, Article article);
 	
 	void delete(Article article);
 }

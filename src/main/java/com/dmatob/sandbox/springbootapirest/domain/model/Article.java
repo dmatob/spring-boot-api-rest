@@ -4,28 +4,34 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dmatob.sandbox.springbootapirest.domain.exception.InvalidArticlePriceException;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+@Builder
 @Getter
+@EqualsAndHashCode
 public class Article {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Article.class);
 	
 	private Long id;
+	private ArticleType type;
 	private String code;
 	private String description;
 	private BigDecimal price;
 	private LocalDateTime lastModificationDate;
 
 	@Builder
-	private Article(Long id, String code, String description, BigDecimal price, LocalDateTime lastModificationDate) {
+	private Article(Long id, ArticleType type, String code, String description, BigDecimal price, LocalDateTime lastModificationDate) {
 		this.id = id;
+		this.type = type;
 		this.code = code;
 		this.description = description;	
 		this.lastModificationDate = lastModificationDate;
@@ -56,6 +62,16 @@ public class Article {
 	public void updateLastModificationDate () {
 		this.lastModificationDate = LocalDateTime.now();
 		LOG.debug("Se ha actualizado la fecha de ultima modificacion del articulo con codigo {}", this.code);
+	}
+
+	public boolean isValid(){
+		return isValidToInsertOrUpdate() && this.getType().isValid();
+	}
+
+	public boolean isValidToInsertOrUpdate(){
+		return !(StringUtils.isBlank(this.getCode())) 
+			&& (this.getType() != null && this.getType().getId() != null)
+			&& (this.getPrice() != null);
 	}
 	
 }

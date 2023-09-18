@@ -18,24 +18,28 @@ import com.dmatob.sandbox.springbootapirest.application.exception.DuplicatedArti
 import com.dmatob.sandbox.springbootapirest.domain.model.Article;
 import com.dmatob.sandbox.springbootapirest.domain.model.ArticleProvider;
 import com.dmatob.sandbox.springbootapirest.domain.repository.ArticleRepository;
+import com.dmatob.sandbox.springbootapirest.domain.repository.ArticleTypeRepository;
 
 class ArticleAppServiceImplTest {
 
 	private ArticleRepository articleRepository;
+	private ArticleTypeRepository articleTypeRepository;
     private ArticleAppServiceImpl service;
     
 	@BeforeEach
     void setUp() {
 		articleRepository = Mockito.mock(ArticleRepository.class);
-        service = new ArticleAppServiceImpl(articleRepository);
+		articleTypeRepository = Mockito.mock(ArticleTypeRepository.class);
+        service = new ArticleAppServiceImpl(articleRepository, articleTypeRepository);
     }
 	
 	@Test
     void shouldCreateArticle_thenSaveIt() {
         final Article article = ArticleProvider.getArticleToInsert();
-        Mockito.when(articleRepository.save(ArgumentMatchers.any(Article.class))).thenAnswer(i -> i.getArgument(0));
+        Mockito.when(articleRepository.insert(ArgumentMatchers.any(Article.class))).thenAnswer(i -> i.getArgument(0));
+		Mockito.when(articleTypeRepository.findById(article.getType().getId())).thenReturn(Optional.of(article.getType()));
         Article response = service.createArticle(article);
-        Mockito.verify(articleRepository).save(article);
+        Mockito.verify(articleRepository).insert(article);
         Assertions.assertEquals(response, article);
     }
 	
@@ -82,11 +86,12 @@ class ArticleAppServiceImplTest {
 	@Test
     void shouldUpdateArticle_thenSaveIt () {
 		final Article article = ArticleProvider.getArticleToModify();
-		final Article newArticle = ArticleProvider.getArticle();
+		final Article newArticle = ArticleProvider.getArticle(article.getId());
 		Mockito.when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.of(article));
-		Mockito.when(articleRepository.save(ArgumentMatchers.any(Article.class))).thenAnswer(i -> i.getArgument(0));
+		Mockito.when(articleRepository.update(ArgumentMatchers.any(Long.class),ArgumentMatchers.any(Article.class))).thenAnswer(i -> i.getArgument(1));
+		Mockito.when(articleTypeRepository.findById(newArticle.getType().getId())).thenReturn(Optional.of(newArticle.getType()));
         Article serviceResponse = service.updateArticle(article.getCode(), newArticle);
-        Mockito.verify(articleRepository).save(ArgumentMatchers.any(Article.class));
+        Mockito.verify(articleRepository).update(ArgumentMatchers.any(Long.class), ArgumentMatchers.any(Article.class));
         Assertions.assertEquals(serviceResponse.getId(), article.getId());
         Assertions.assertEquals(serviceResponse.getCode(), newArticle.getCode());
         Assertions.assertEquals(serviceResponse.getDescription(), newArticle.getDescription());
@@ -108,9 +113,9 @@ class ArticleAppServiceImplTest {
 		final Article article = ArticleProvider.getArticleToModify();
 		BigDecimal newPrice = new BigDecimal(45.55d).setScale(2, RoundingMode.HALF_UP);
 		Mockito.when(articleRepository.findByCode(article.getCode())).thenReturn(Optional.of(article));
-		Mockito.when(articleRepository.save(ArgumentMatchers.any(Article.class))).thenAnswer(i -> i.getArgument(0));
+		Mockito.when(articleRepository.update(ArgumentMatchers.any(Long.class), ArgumentMatchers.any(Article.class))).thenAnswer(i -> i.getArgument(1));
         Article modifiedArticle = service.updatePriceArticleByCode(article.getCode(), newPrice);
-        Mockito.verify(articleRepository).save(ArgumentMatchers.any(Article.class));
+        Mockito.verify(articleRepository).update(ArgumentMatchers.any(Long.class), ArgumentMatchers.any(Article.class));
         
         Assertions.assertEquals(modifiedArticle.getId(), article.getId());
         Assertions.assertEquals(modifiedArticle.getCode(), article.getCode());

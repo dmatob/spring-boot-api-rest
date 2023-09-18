@@ -2,71 +2,51 @@ package com.dmatob.sandbox.springbootapirest.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Random;
 
-public class ArticleProvider {
-
-	private static final int ASCII_VALUE_OF_A_LOWERCASE = 97;
-	private static final int ASCII_VALUE_OF_Z_LOWERCASE = 122;
-
-	public static Random random = new Random();
+public class ArticleProvider extends BaseProvider {
 
 	public static Article getArticle() {
-		String generatedCode = random.ints(ASCII_VALUE_OF_A_LOWERCASE, ASCII_VALUE_OF_Z_LOWERCASE + 1)
-				.limit(20)
-				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-				.toString();
+		return getArticle(null);
 
-		String generatedDesc = random.ints(ASCII_VALUE_OF_A_LOWERCASE, ASCII_VALUE_OF_Z_LOWERCASE + 1)
-				.limit(80)
-				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-				.toString();
+	}
 
+	public static Article getArticle(Long id) {
 		return Article.builder()
-				.id(Math.abs(random.nextLong()))
-				.code(generatedCode)
-				.description(generatedDesc)
+				.id(id != null ? id : Math.abs(random.nextLong()))
+				.code(getRandomString(20))
+				.description(getRandomString(80))
 				.price(BigDecimal.valueOf(random.nextDouble()))
+				.type(getArticleType())
 				.lastModificationDate(LocalDateTime.of(1960, 1, 1, 0, 0, 0))
 				.build();
 
 	}
 
 	public static Article getArticleToInsert() {
-		String generatedCode = random.ints(ASCII_VALUE_OF_A_LOWERCASE, ASCII_VALUE_OF_Z_LOWERCASE + 1)
-				.limit(20)
-				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-				.toString();
-
-		String generatedDesc = random.ints(ASCII_VALUE_OF_A_LOWERCASE, ASCII_VALUE_OF_Z_LOWERCASE + 1)
-				.limit(80)
-				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-				.toString();
-
 		return Article.builder()
-				.code(generatedCode)
-				.description(generatedDesc)
+				.code(getRandomString(20))
+				.description(getRandomString(80))
 				.price(BigDecimal.valueOf(random.nextDouble()))
+				.type(getArticleType())
 				.build();
 	}
 
 	public static Article getArticleToModify() {
-		String generatedCode = random.ints(ASCII_VALUE_OF_A_LOWERCASE, ASCII_VALUE_OF_Z_LOWERCASE + 1)
-				.limit(20)
-				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-				.toString();
-
-		String generatedDesc = random.ints(ASCII_VALUE_OF_A_LOWERCASE, ASCII_VALUE_OF_Z_LOWERCASE + 1)
-				.limit(80)
-				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-				.toString();
-
 		return Article.builder()
 				.id(Math.abs(random.nextLong()))
-				.code(generatedCode)
-				.description(generatedDesc)
+				.code(getRandomString(20))
+				.description(getRandomString(80))
 				.price(BigDecimal.valueOf(random.nextDouble()))
+				.type(getArticleType())
 				.build();
+	}
+
+	public static ArticleType getArticleType() {
+		return ArticleType.builder()
+					.id(Math.abs(random.nextLong()))
+					.code(getRandomString(20))
+					.description(getRandomString(80))
+					.build();
 	}
 
 }

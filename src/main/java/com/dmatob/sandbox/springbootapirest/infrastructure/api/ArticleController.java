@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import com.dmatob.sandbox.springbootapirest.application.service.ArticleAppServic
 import com.dmatob.sandbox.springbootapirest.infrastructure.api.dto.ArticleDTO;
 import com.dmatob.sandbox.springbootapirest.infrastructure.api.dto.ArticleModificationRequestDTO;
 import com.dmatob.sandbox.springbootapirest.infrastructure.api.dto.ArticlePriceModificationRequestDTO;
+import com.dmatob.sandbox.springbootapirest.infrastructure.api.mapper.ArticleDTOMapper;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,6 +37,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public class ArticleController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ArticleController.class);
+	private ArticleDTOMapper mapper = Mappers.getMapper(ArticleDTOMapper.class);
 
 	private final ArticleAppService articleAppService;
 
@@ -52,8 +55,8 @@ public class ArticleController {
 	ResponseEntity<ArticleDTO> createArticle(@RequestBody @Valid final ArticleModificationRequestDTO articleDataDTO) {
 		LOG.info("Llamada a la API de articulos para crear un nuevo articulo");
 		return new ResponseEntity<>(
-				ArticleDTOMapper.toArticleDTO(
-						this.articleAppService.createArticle(ArticleDTOMapper.fromArticleDTO(articleDataDTO))),
+				this.mapper.toArticleDTO(
+						this.articleAppService.createArticle(this.mapper.fromArticleModificationRequestDTO(articleDataDTO))),
 				HttpStatus.CREATED);
 	}
 
@@ -66,7 +69,7 @@ public class ArticleController {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<List<ArticleDTO>> getAllArticles() {
 		LOG.info("Llamada a la API de articulos para obtener el listado de todos los articulos disponibles");
-		return ResponseEntity.ok(ArticleDTOMapper.toListOfArticleDTOs(this.articleAppService.getAllArticles()));
+		return ResponseEntity.ok(this.mapper.map(this.articleAppService.getAllArticles()));
 	}
 	
 
@@ -78,7 +81,7 @@ public class ArticleController {
 	@GetMapping(value = "/{articleCode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<ArticleDTO> getArticleByCode(@PathVariable final String articleCode) {
 		LOG.info("Llamada a la API de articulos para obtener informacion del articulo con codigo {}", articleCode);
-		return ResponseEntity.ok(ArticleDTOMapper.toArticleDTO(this.articleAppService.getArticle(articleCode)));
+		return ResponseEntity.ok(this.mapper.toArticleDTO(this.articleAppService.getArticle(articleCode)));
 	}
 	
 
@@ -93,8 +96,8 @@ public class ArticleController {
 			@RequestBody @Valid final ArticleModificationRequestDTO articleDataDTO) {
 		LOG.info("Llamada a la API de articulos para modificar la informacion del articulo con codigo: {}",
 				articleCode);
-		return new ResponseEntity<>(ArticleDTOMapper.toArticleDTO(
-				this.articleAppService.updateArticle(articleCode, ArticleDTOMapper.fromArticleDTO(articleDataDTO))),
+		return new ResponseEntity<>(this.mapper.toArticleDTO(
+				this.articleAppService.updateArticle(articleCode, this.mapper.fromArticleModificationRequestDTO(articleDataDTO))),
 				HttpStatus.OK);
 	}
 	
@@ -110,7 +113,7 @@ public class ArticleController {
 			@RequestBody @Valid final ArticlePriceModificationRequestDTO articleDataDTO) {
 		LOG.info("Llamada a la API de articulos para modificar el precio del articulo con codigo: {}", articleCode);
 		return new ResponseEntity<>(
-				ArticleDTOMapper.toArticleDTO(
+				this.mapper.toArticleDTO(
 						this.articleAppService.updatePriceArticleByCode(articleCode, articleDataDTO.getPrice())),
 				HttpStatus.OK);
 	}
