@@ -15,6 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.dmatob.sandbox.springbootapirest.application.exception.ArticleNotFoundException;
+import com.dmatob.sandbox.springbootapirest.application.exception.ArticleTypeNotFoundException;
 import com.dmatob.sandbox.springbootapirest.application.exception.DuplicatedArticleException;
 import com.dmatob.sandbox.springbootapirest.domain.exception.InvalidArticlePriceException;
 
@@ -32,6 +33,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	protected ResponseEntity<Object> invalidArticlePrice(RuntimeException ex, WebRequest request) {
 		String bodyOfResponse = "El precio del artículo es incorrecto. El precio ha de ser mayor a 0€";
+		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
+
+	@ExceptionHandler(value = { ArticleTypeNotFoundException.class })
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	protected ResponseEntity<Object> invalidArticleTypeException (RuntimeException ex, WebRequest request) {
+		String bodyOfResponse = "El tipo de artículo indicado no existe";
 		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 
