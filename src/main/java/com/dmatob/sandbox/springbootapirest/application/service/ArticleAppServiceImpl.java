@@ -5,6 +5,8 @@ import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,7 @@ public class ArticleAppServiceImpl implements ArticleAppService {
 	}
 
 	@Override
+	@Transactional
 	@CacheEvict(value="articles", allEntries = true)
 	public Article createArticle(Article article) {
 		
@@ -47,12 +50,8 @@ public class ArticleAppServiceImpl implements ArticleAppService {
 			throw new DuplicatedArticleException("El articulo ya existe");
 		}
 
-		Optional<ArticleType> opArticleType = articleTypeRepository.findById(article.getType().getId());
-		if (opArticleType.isEmpty()){
-			LOG.error("No se puede dar de alta el articulo con codigo: {}. No existe el tipo de articulo indicado. Identificador del tipo de articulo: {}", article.getCode(), article.getType().getId());
-			throw new ArticleTypeNotFoundException("El tipo de articulo no existe");
-		}
-		
+		this.checkArticleTypeExists(article.getType().getId());
+
 		return this.articleRepository.insert(article);
 	}
 
@@ -84,6 +83,7 @@ public class ArticleAppServiceImpl implements ArticleAppService {
 	}
 
 	@Override
+	@Transactional
 	@Caching(evict = {
             @CacheEvict(value="articles", allEntries=true),
             @CacheEvict(value="article", key = "#code")
@@ -106,10 +106,9 @@ public class ArticleAppServiceImpl implements ArticleAppService {
 			throw new ArticleNotFoundException("No se puede actulizar el articulo con el codigo proporcionado");
 		}
 
-		Optional<ArticleType> opArticleType = articleTypeRepository.findById(article.getType().getId());
-		if (opArticleType.isEmpty()){
-			LOG.error("No se puede dar de alta el articulo con codigo: {}. No existe el tipo de articulo indicado. Identificador del tipo de articulo: {}", article.getCode(), article.getType().getId());
-			throw new ArticleTypeNotFoundException("El tipo de articulo no existe");
+		// En caso de que se modifique el tipo de articulo se comprueba si es valido, si no se omite.
+		if (!currentArticle.getType().getId().equals(article.getType().getId())){
+			this.checkArticleTypeExists(article.getType().getId());
 		}
 
 		Article modifiedArticle = this.articleRepository.update(currentArticle.getId(), article);
@@ -121,6 +120,7 @@ public class ArticleAppServiceImpl implements ArticleAppService {
 	}
 
 	@Override
+	@Transactional
 	@Caching(evict = {
             @CacheEvict(value="articles", allEntries=true),
             @CacheEvict(value="article", key = "#code")
@@ -144,6 +144,7 @@ public class ArticleAppServiceImpl implements ArticleAppService {
 	}
 
 	@Override
+	@Transactional
 	@Caching(evict = {
             @CacheEvict(value="articles", allEntries=true),
             @CacheEvict(value="article", key = "#code")
@@ -162,4 +163,15 @@ public class ArticleAppServiceImpl implements ArticleAppService {
 		LOG.info("Se ha eliminado el articulo con codigo: {}", code);
 	}
 
+
+	/*
+	 * Método que comprueba si existe un tipo de articulo, en caso de no existir lanzará una excepción.
+	 */
+	private void checkArticleTypeExists(Long idArticleType){
+		Optional<ArticleType> opArticleType = articleTypeRepository.findById(idArticleType);
+		if (opArticleType.isEmpty()){
+			LOG.error("No se puede proceder con la operación. No existe el tipo de articulo indicado. Identificador del tipo de articulo: {}", idArticleType);
+			throw new ArticleTypeNotFoundException("El tipo de articulo no existe");
+		}
+	}
 }
