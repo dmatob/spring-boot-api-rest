@@ -3,8 +3,10 @@ package com.dmatob.sandbox.springbootapirest.infrastructure.persistence.h2.entit
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,7 +39,7 @@ public class ArticleEntity {
 	@Column(name = "ID_ARTICULO_TIPO")
 	private Long typeId;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "ID_ARTICULO_TIPO", insertable = false, updatable = false)
 	private ArticleTypeEntity type;
 	
