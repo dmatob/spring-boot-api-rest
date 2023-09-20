@@ -15,6 +15,7 @@ public interface ArticleRepositoryJPA extends JpaRepository<ArticleEntity, Long>
 	@EntityGraph(value = "article-entity")
 	List<ArticleEntity> findAll();
 
+	@EntityGraph(value = "article-entity")
 	public Optional<ArticleEntity> findByCode (String code);
 	
 }
