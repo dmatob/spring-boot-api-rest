@@ -8,7 +8,7 @@
             "type": "java",
             "name": "Artículos APP",
             "request": "launch",
-            "mainClass": "com.dmatob.sandbox.springbootapirest.ArticlesApplication",
+            "mainClass": "com.dmatob.sandbox.springboot.ArticlesApplication",
             "projectName": "spring-boot-api-rest"
         }
     ]
