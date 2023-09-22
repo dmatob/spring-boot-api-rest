@@ -3,7 +3,8 @@ package com.dmatob.sandbox.springbootapirest.infrastructure.api.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.DecimalMin;
+
 
 public class ArticlePriceModificationRequestDTO implements Serializable {
 	

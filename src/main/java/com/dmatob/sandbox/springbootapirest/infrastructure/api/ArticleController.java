@@ -2,7 +2,6 @@ package com.dmatob.sandbox.springbootapirest.infrastructure.api;
 
 import java.util.List;
 
-import javax.validation.Valid;
 
 import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;
@@ -31,6 +30,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/articles")

@@ -5,8 +5,6 @@ import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +19,8 @@ import com.dmatob.sandbox.springbootapirest.domain.model.Article;
 import com.dmatob.sandbox.springbootapirest.domain.model.ArticleType;
 import com.dmatob.sandbox.springbootapirest.domain.repository.ArticleRepository;
 import com.dmatob.sandbox.springbootapirest.domain.repository.ArticleTypeRepository;
+
+import jakarta.transaction.Transactional;
 
 public class ArticleAppServiceImpl implements ArticleAppService {
 
