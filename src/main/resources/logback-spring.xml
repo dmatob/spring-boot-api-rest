@@ -14,7 +14,7 @@
     </appender>
     
 	<appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOGS}/prueba-tecnica.log</file>
+		<file>${LOGS}/spring-boot-sandbox.log</file>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>${FILE_LOG_PATTERN}</Pattern>
 			<charset>${FILE_LOG_CHARSET}</charset>
@@ -22,7 +22,7 @@
 
 		<rollingPolicy
 			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${LOGS}/archivo/prueba-tecnica-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<fileNamePattern>${LOGS}/archivo/spring-boot-sandbox-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<maxFileSize>15MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -33,7 +33,7 @@
 		<appender-ref ref="Console" />
 	</root>
 
-	<logger name="es.sprinter" level="debug" additivity="false">
+	<logger name="com.dmatob.sandbox.springboot" level="debug" additivity="false">
 		<appender-ref ref="RollingFile" />
 		<appender-ref ref="Console" />
 	</logger>
