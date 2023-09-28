@@ -1,4 +1,4 @@
-package com.dmatob.sandbox.springboot.infrastructure.api.mapper;
+package com.dmatob.sandbox.springboot.infrastructure.api.rest.mapper;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.dmatob.sandbox.springboot.domain.model.Article;
-import com.dmatob.sandbox.springboot.infrastructure.api.dto.ArticleDTO;
-import com.dmatob.sandbox.springboot.infrastructure.api.dto.ArticleModificationRequestDTO;
+import com.dmatob.sandbox.springboot.infrastructure.api.rest.dto.ArticleDTO;
+import com.dmatob.sandbox.springboot.infrastructure.api.rest.dto.ArticleModificationRequestDTO;
 
 @Mapper(uses = ArticleTypeDTOMapper.class)
 public interface ArticleDTOMapper {

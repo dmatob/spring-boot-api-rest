@@ -1,4 +1,4 @@
-package com.dmatob.sandbox.springboot.infrastructure.api;
+package com.dmatob.sandbox.springboot.infrastructure.api.rest;
 
 import java.util.List;
 
@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dmatob.sandbox.springboot.application.service.ArticleAppService;
-import com.dmatob.sandbox.springboot.infrastructure.api.dto.ArticleDTO;
-import com.dmatob.sandbox.springboot.infrastructure.api.dto.ArticleModificationRequestDTO;
-import com.dmatob.sandbox.springboot.infrastructure.api.dto.ArticlePriceModificationRequestDTO;
-import com.dmatob.sandbox.springboot.infrastructure.api.mapper.ArticleDTOMapper;
+import com.dmatob.sandbox.springboot.infrastructure.api.rest.dto.ArticleDTO;
+import com.dmatob.sandbox.springboot.infrastructure.api.rest.dto.ArticleModificationRequestDTO;
+import com.dmatob.sandbox.springboot.infrastructure.api.rest.dto.ArticlePriceModificationRequestDTO;
+import com.dmatob.sandbox.springboot.infrastructure.api.rest.mapper.ArticleDTOMapper;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -37,7 +37,7 @@ import jakarta.validation.Valid;
 public class ArticleController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ArticleController.class);
-	private ArticleDTOMapper mapper = Mappers.getMapper(ArticleDTOMapper.class);
+	private final ArticleDTOMapper mapper = Mappers.getMapper(ArticleDTOMapper.class);
 
 	private final ArticleAppService articleAppService;
 
@@ -53,7 +53,7 @@ public class ArticleController {
 			@ApiResponse(responseCode = "400", description = "Petición incorrecta", content = @Content) })
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<ArticleDTO> createArticle(@RequestBody @Valid final ArticleModificationRequestDTO articleDataDTO) {
-		LOG.info("Llamada a la API de articulos para crear un nuevo articulo");
+		LOG.info("Llamada a la API-REST de articulos para crear un nuevo articulo");
 		return new ResponseEntity<>(
 				this.mapper.toArticleDTO(
 						this.articleAppService.createArticle(this.mapper.fromArticleModificationRequestDTO(articleDataDTO))),
@@ -68,7 +68,7 @@ public class ArticleController {
 			@ApiResponse(responseCode = "400", description = "Petición incorrecta", content = @Content) })
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<List<ArticleDTO>> getAllArticles() {
-		LOG.info("Llamada a la API de articulos para obtener el listado de todos los articulos disponibles");
+		LOG.info("Llamada a la API-REST de articulos para obtener el listado de todos los articulos disponibles");
 		return ResponseEntity.ok(this.mapper.map(this.articleAppService.getAllArticles()));
 	}
 	
@@ -80,7 +80,7 @@ public class ArticleController {
 			@ApiResponse(responseCode = "400", description = "Petición incorrecta", content = @Content) })
 	@GetMapping(value = "/{articleCode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<ArticleDTO> getArticleByCode(@PathVariable final String articleCode) {
-		LOG.info("Llamada a la API de articulos para obtener informacion del articulo con codigo {}", articleCode);
+		LOG.info("Llamada a la API-REST de articulos para obtener informacion del articulo con codigo {}", articleCode);
 		return ResponseEntity.ok(this.mapper.toArticleDTO(this.articleAppService.getArticle(articleCode)));
 	}
 	
@@ -94,7 +94,7 @@ public class ArticleController {
 	@PutMapping(value = "/{articleCode}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<ArticleDTO> updateArticle(@PathVariable final String articleCode,
 			@RequestBody @Valid final ArticleModificationRequestDTO articleDataDTO) {
-		LOG.info("Llamada a la API de articulos para modificar la informacion del articulo con codigo: {}",
+		LOG.info("Llamada a la API-REST de articulos para modificar la informacion del articulo con codigo: {}",
 				articleCode);
 		return new ResponseEntity<>(this.mapper.toArticleDTO(
 				this.articleAppService.updateArticle(articleCode, this.mapper.fromArticleModificationRequestDTO(articleDataDTO))),
@@ -111,7 +111,7 @@ public class ArticleController {
 	@PatchMapping(value = "/{articleCode}/price", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<ArticleDTO> updatePriceArticle(@PathVariable final String articleCode,
 			@RequestBody @Valid final ArticlePriceModificationRequestDTO articleDataDTO) {
-		LOG.info("Llamada a la API de articulos para modificar el precio del articulo con codigo: {}", articleCode);
+		LOG.info("Llamada a la API-REST de articulos para modificar el precio del articulo con codigo: {}", articleCode);
 		return new ResponseEntity<>(
 				this.mapper.toArticleDTO(
 						this.articleAppService.updatePriceArticleByCode(articleCode, articleDataDTO.getPrice())),
@@ -126,7 +126,7 @@ public class ArticleController {
 			@ApiResponse(responseCode = "404", description = "Artículo no encontrado", content = @Content)})
 	@DeleteMapping(value = "/{articleCode}")
 	ResponseEntity<Void> deleteArticle(@PathVariable final String articleCode) {
-		LOG.info("Llamada a la API de articulos para eliminar el articulo con codigo: {}", articleCode);
+		LOG.info("Llamada a la API-REST de articulos para eliminar el articulo con codigo: {}", articleCode);
 		this.articleAppService.deleteArticleByCode(articleCode);
 		return ResponseEntity.ok().build();
 	}

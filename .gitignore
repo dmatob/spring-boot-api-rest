@@ -28,3 +28,6 @@ hs_err_pid*
 
 # Eclipse settings
 .settings/*
+
+#Jaxb bindings
+**/META-INF/JAXB/*

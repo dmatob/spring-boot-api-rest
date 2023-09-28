@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<jaxb:bindings version="3.0" xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+  jaxb:extensionBindingPrefixes="xjc" xmlns:annox="http://annox.dev.java.net" xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+ 
+  <jaxb:globalBindings typesafeEnumMemberName="generateName">
+      <xjc:javaType name="java.time.LocalDate" xmlType="xs:date" adapter="com.dmatob.sandbox.springboot.infrastructure.api.soap.adapter.LocalDateAdapter" />
+       <xjc:javaType name="java.time.LocalDateTime" xmlType="xs:dateTime" adapter="com.dmatob.sandbox.springboot.infrastructure.api.soap.adapter.LocalDateTimeAdapter" />
+  </jaxb:globalBindings>
+</jaxb:bindings>

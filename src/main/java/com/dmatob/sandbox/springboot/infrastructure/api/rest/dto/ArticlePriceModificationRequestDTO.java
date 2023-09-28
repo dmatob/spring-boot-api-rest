@@ -1,4 +1,4 @@
-package com.dmatob.sandbox.springboot.infrastructure.api.dto;
+package com.dmatob.sandbox.springboot.infrastructure.api.rest.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

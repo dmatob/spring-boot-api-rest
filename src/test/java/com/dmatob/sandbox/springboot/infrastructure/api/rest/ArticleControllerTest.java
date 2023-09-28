@@ -1,4 +1,4 @@
-package com.dmatob.sandbox.springboot.infrastructure.api;
+package com.dmatob.sandbox.springboot.infrastructure.api.rest;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,8 +25,7 @@ import com.dmatob.sandbox.springboot.application.exception.DuplicatedArticleExce
 import com.dmatob.sandbox.springboot.application.service.ArticleAppService;
 import com.dmatob.sandbox.springboot.domain.model.Article;
 import com.dmatob.sandbox.springboot.domain.model.ArticleProvider;
-import com.dmatob.sandbox.springboot.infrastructure.api.ArticleController;
-import com.dmatob.sandbox.springboot.infrastructure.api.mapper.ArticleDTOMapper;
+import com.dmatob.sandbox.springboot.infrastructure.api.rest.mapper.ArticleDTOMapper;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ArticleController.class)

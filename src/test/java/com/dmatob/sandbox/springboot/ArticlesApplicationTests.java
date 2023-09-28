@@ -10,8 +10,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.dmatob.sandbox.springboot.application.service.ArticleAppService;
 import com.dmatob.sandbox.springboot.domain.repository.ArticleRepository;
-import com.dmatob.sandbox.springboot.infrastructure.api.ArticleController;
+import com.dmatob.sandbox.springboot.domain.repository.ArticleTypeRepository;
+import com.dmatob.sandbox.springboot.infrastructure.api.rest.ArticleController;
 import com.dmatob.sandbox.springboot.infrastructure.persistence.h2.repository.jpa.ArticleRepositoryJPA;
+import com.dmatob.sandbox.springboot.infrastructure.persistence.h2.repository.jpa.ArticleTypeRepositoryJPA;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -28,6 +30,12 @@ class ArticlesApplicationTests {
   
   @Autowired
   ArticleRepositoryJPA articleRepositoryJPA;
+
+  // @Autowired
+  // ArticleTypeRepository articleTypeRepository;
+  
+  // @Autowired
+  // ArticleTypeRepositoryJPA articleTypeRepositoryJPA;
   
   @Test
   void contextLoads() {   
@@ -35,5 +43,7 @@ class ArticlesApplicationTests {
     assertNotNull(articleService);
     assertNotNull(articleRepository);
     assertNotNull(articleRepositoryJPA);
+    // assertNotNull(articleTypeRepository);
+    // assertNotNull(articleTypeRepositoryJPA);
   }
 }

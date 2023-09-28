@@ -1,4 +1,4 @@
-package com.dmatob.sandbox.springboot.infrastructure.api;
+package com.dmatob.sandbox.springboot.infrastructure.api.rest;
 
 import java.util.HashMap;
 import java.util.Map;

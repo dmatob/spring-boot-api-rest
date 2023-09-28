@@ -1,11 +1,11 @@
-package com.dmatob.sandbox.springboot.infrastructure.api.mapper;
+package com.dmatob.sandbox.springboot.infrastructure.api.rest.mapper;
 
 import java.util.List;
 
 import org.mapstruct.Mapper;
 
 import com.dmatob.sandbox.springboot.domain.model.ArticleType;
-import com.dmatob.sandbox.springboot.infrastructure.api.dto.ArticleTypeDTO;
+import com.dmatob.sandbox.springboot.infrastructure.api.rest.dto.ArticleTypeDTO;
 
 @Mapper
 public interface ArticleTypeDTOMapper {
