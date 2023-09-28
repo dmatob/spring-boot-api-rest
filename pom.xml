@@ -136,6 +136,7 @@
 					<xjbSources>
 						<xjbSource>${project.basedir}/src/main/resources/com/dmatob/sandbox/springboot/api/soap/xjb/bindings.xjb</xjbSource>
 					</xjbSources>
+					<noGeneratedHeaderComments>true</noGeneratedHeaderComments>
 				</configuration>
 			</plugin>
 		</plugins>
