@@ -31,3 +31,4 @@ hs_err_pid*
 
 #Jaxb bindings
 **/META-INF/JAXB/*
+spring-boot-sandbox-soapui-project.xml
